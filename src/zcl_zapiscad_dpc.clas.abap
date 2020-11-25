@@ -110,7 +110,7 @@ CLASS ZCL_ZAPISCAD_DPC IMPLEMENTATION.
   method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~CREATE_ENTITY.
 *&----------------------------------------------------------------------------------------------*
 *&  Include           /IWBEP/DPC_TEMP_CRT_ENTITY_BASE
-*&* This class has been generated on 17.03.2020 17:35:30 in client 210
+*&* This class has been generated on 24.11.2020 15:03:28 in client 200
 *&*
 *&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
 *&*   If you want to change the DPC implementation, use the
@@ -165,7 +165,7 @@ ENDCASE.
   method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~DELETE_ENTITY.
 *&----------------------------------------------------------------------------------------------*
 *&  Include           /IWBEP/DPC_TEMP_DEL_ENTITY_BASE
-*&* This class has been generated on 17.03.2020 17:35:30 in client 210
+*&* This class has been generated on 24.11.2020 15:03:28 in client 200
 *&*
 *&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
 *&*   If you want to change the DPC implementation, use the
@@ -207,7 +207,7 @@ CASE lv_entityset_name.
   method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_ENTITY.
 *&-----------------------------------------------------------------------------------------------*
 *&  Include           /IWBEP/DPC_TEMP_GETENTITY_BASE
-*&* This class has been generated  on 17.03.2020 17:35:30 in client 210
+*&* This class has been generated  on 24.11.2020 15:03:28 in client 200
 *&*
 *&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
 *&*   If you want to change the DPC implementation, use the
@@ -268,7 +268,7 @@ CASE lv_entityset_name.
   method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_ENTITYSET.
 *&----------------------------------------------------------------------------------------------*
 *&  Include           /IWBEP/DPC_TMP_ENTITYSET_BASE
-*&* This class has been generated on 17.03.2020 17:35:30 in client 210
+*&* This class has been generated on 24.11.2020 15:03:28 in client 200
 *&*
 *&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
 *&*   If you want to change the DPC implementation, use the
@@ -333,7 +333,7 @@ CASE lv_entityset_name.
   method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~UPDATE_ENTITY.
 *&----------------------------------------------------------------------------------------------*
 *&  Include           /IWBEP/DPC_TEMP_UPD_ENTITY_BASE
-*&* This class has been generated on 17.03.2020 17:35:30 in client 210
+*&* This class has been generated on 24.11.2020 15:03:28 in client 200
 *&*
 *&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
 *&*   If you want to change the DPC implementation, use the
@@ -544,15 +544,15 @@ lo_logger = /iwbep/if_mgw_conv_srv_runtime~get_logger( ).
  DATA lv_subrc TYPE syst-subrc.
  DATA lv_exc_msg TYPE /iwbep/mgw_bop_rfc_excep_text.
  DATA lx_root TYPE REF TO cx_root.
- DATA lo_filter TYPE  REF TO /iwbep/if_mgw_req_filter.
- DATA lt_filter_select_options TYPE /iwbep/t_mgw_select_option.
- DATA lv_filter_str TYPE string.
- DATA ls_paging TYPE /iwbep/s_mgw_paging.
- DATA ls_converted_keys LIKE LINE OF et_entityset.
- DATA lo_dp_facade TYPE REF TO /iwbep/if_mgw_dp_facade.
- DATA ls_gw_et_apis LIKE LINE OF et_entityset.
- DATA lv_skip     TYPE int4.
- DATA lv_top      TYPE int4.
+DATA lo_filter TYPE  REF TO /iwbep/if_mgw_req_filter.
+DATA lt_filter_select_options TYPE /iwbep/t_mgw_select_option.
+DATA lv_filter_str TYPE string.
+DATA ls_paging TYPE /iwbep/s_mgw_paging.
+DATA ls_converted_keys LIKE LINE OF et_entityset.
+DATA lo_dp_facade TYPE REF TO /iwbep/if_mgw_dp_facade.
+DATA ls_gw_et_apis LIKE LINE OF et_entityset.
+DATA lv_skip     TYPE int4.
+DATA lv_top      TYPE int4.
 
 *-------------------------------------------------------------
 *  Map the runtime request to the RFC - Only mapped attributes
@@ -561,74 +561,74 @@ lo_logger = /iwbep/if_mgw_conv_srv_runtime~get_logger( ).
 * Since DPC works with internal property names and runtime API interface holds external property names
 * the process needs to get the all needed input information from the technical request context object
 * Get filter or select option information
- lo_filter = io_tech_request_context->get_filter( ).
- lt_filter_select_options = lo_filter->get_filter_select_options( ).
- lv_filter_str = lo_filter->get_filter_string( ).
+  lo_filter = io_tech_request_context->get_filter( ).
+  lt_filter_select_options = lo_filter->get_filter_select_options( ).
+  lv_filter_str = lo_filter->get_filter_string( ).
 
 * Check if the supplied filter is supported by standard gateway runtime process
- IF  lv_filter_str            IS NOT INITIAL
- AND lt_filter_select_options IS INITIAL.
-   " If the string of the Filter System Query Option is not automatically converted into
-   " filter option table (lt_filter_select_options), then the filtering combination is not supported
-   " Log message in the application log
-   me->/iwbep/if_sb_dpc_comm_services~log_message(
-     EXPORTING
-       iv_msg_type   = 'E'
-       iv_msg_id     = '/IWBEP/MC_SB_DPC_ADM'
-       iv_msg_number = 025 ).
-   " Raise Exception
-   RAISE EXCEPTION TYPE /iwbep/cx_mgw_tech_exception
-     EXPORTING
-       textid = /iwbep/cx_mgw_tech_exception=>internal_error.
- ENDIF.
+  IF  lv_filter_str            IS NOT INITIAL
+  AND lt_filter_select_options IS INITIAL.
+    " If the string of the Filter System Query Option is not automatically converted into
+    " filter option table (lt_filter_select_options), then the filtering combination is not supported
+    " Log message in the application log
+    me->/iwbep/if_sb_dpc_comm_services~log_message(
+      EXPORTING
+        iv_msg_type   = 'E'
+        iv_msg_id     = '/IWBEP/MC_SB_DPC_ADM'
+        iv_msg_number = 025 ).
+     " Raise Exception
+     RAISE EXCEPTION TYPE /iwbep/cx_mgw_tech_exception
+       EXPORTING
+         textid = /iwbep/cx_mgw_tech_exception=>internal_error.
+  ENDIF.
 
 * Get key table information
- io_tech_request_context->get_converted_source_keys(
-   IMPORTING
-     es_key_values  = ls_converted_keys ).
+  io_tech_request_context->get_converted_source_keys(
+    IMPORTING
+      es_key_values  = ls_converted_keys ).
 
- ls_paging-top = io_tech_request_context->get_top( ).
- ls_paging-skip = io_tech_request_context->get_skip( ).
+  ls_paging-top = io_tech_request_context->get_top( ).
+  ls_paging-skip = io_tech_request_context->get_skip( ).
 
 * Get RFC destination
- lo_dp_facade = /iwbep/if_mgw_conv_srv_runtime~get_dp_facade( ).
- lv_destination = /iwbep/cl_sb_gen_dpc_rt_util=>get_rfc_destination( io_dp_facade = lo_dp_facade ).
+lo_dp_facade = /iwbep/if_mgw_conv_srv_runtime~get_dp_facade( ).
+lv_destination = /iwbep/cl_sb_gen_dpc_rt_util=>get_rfc_destination( io_dp_facade = lo_dp_facade ).
 
 *-------------------------------------------------------------
 *  Call RFC function module
 *-------------------------------------------------------------
- lv_rfc_name = 'ZF_GET_APISCAD'.
+lv_rfc_name = 'ZF_GET_APISCAD'.
 
- IF lv_destination IS INITIAL OR lv_destination EQ 'NONE'.
+IF lv_destination IS INITIAL OR lv_destination EQ 'NONE'.
 
-   TRY.
-       CALL FUNCTION lv_rfc_name
-         IMPORTING
-           et_apis        = et_apis
-         EXCEPTIONS
-           system_failure = 1000 message lv_exc_msg
-           OTHERS         = 1002.
+  TRY.
+      CALL FUNCTION lv_rfc_name
+        IMPORTING
+          et_apis   =   et_apis
+        EXCEPTIONS
+          system_failure = 1000 message lv_exc_msg
+          OTHERS = 1002.
 
-       lv_subrc = sy-subrc.
+      lv_subrc = sy-subrc.
 *in case of co-deployment the exception is raised and needs to be caught
-     CATCH cx_root INTO lx_root.
-       lv_subrc = 1001.
-       lv_exc_msg = lx_root->if_message~get_text( ).
-   ENDTRY.
+    CATCH cx_root INTO lx_root.
+      lv_subrc = 1001.
+      lv_exc_msg = lx_root->if_message~get_text( ).
+  ENDTRY.
 
- ELSE.
+ELSE.
 
-   CALL FUNCTION lv_rfc_name DESTINATION lv_destination
-     IMPORTING
-       et_apis               = et_apis
-     EXCEPTIONS
-       system_failure        = 1000 MESSAGE lv_exc_msg
-       communication_failure = 1001 MESSAGE lv_exc_msg
-       OTHERS                = 1002.
+  CALL FUNCTION lv_rfc_name DESTINATION lv_destination
+        IMPORTING
+          et_apis   =   et_apis
+        EXCEPTIONS
+          system_failure         = 1000 MESSAGE lv_exc_msg
+          communication_failure  = 1001 MESSAGE lv_exc_msg
+          OTHERS = 1002.
 
-   lv_subrc = sy-subrc.
+  lv_subrc = sy-subrc.
 
- ENDIF.
+ENDIF.
 
 *-------------------------------------------------------------
 *  Map the RFC response to the caller interface - Only mapped attributes
@@ -636,48 +636,48 @@ lo_logger = /iwbep/if_mgw_conv_srv_runtime~get_logger( ).
 *-------------------------------------------------------------
 * Error and exception handling
 *-------------------------------------------------------------
- IF lv_subrc <> 0.
+IF lv_subrc <> 0.
 * Execute the RFC exception handling process
-   me->/iwbep/if_sb_dpc_comm_services~rfc_exception_handling(
-     EXPORTING
-       iv_subrc            = lv_subrc
-       iv_exp_message_text = lv_exc_msg ).
- ENDIF.
+  me->/iwbep/if_sb_dpc_comm_services~rfc_exception_handling(
+    EXPORTING
+      iv_subrc            = lv_subrc
+      iv_exp_message_text = lv_exc_msg ).
+ENDIF.
 
 *-------------------------------------------------------------------------*
 *             - Post Backend Call -
 *-------------------------------------------------------------------------*
- IF ls_paging-skip IS NOT INITIAL.
+IF ls_paging-skip IS NOT INITIAL.
 *  If the Skip value was requested at runtime
 *  the response table will provide backend entries from skip + 1, meaning start from skip +1
 *  for example: skip=5 means to start get results from the 6th row
-   lv_skip = ls_paging-skip + 1.
- ENDIF.
+  lv_skip = ls_paging-skip + 1.
+ENDIF.
 *  The Top value was requested at runtime but was not handled as part of the function interface
- IF  ls_paging-top <> 0
- AND lv_skip IS NOT INITIAL.
+IF  ls_paging-top <> 0
+AND lv_skip IS NOT INITIAL.
 *  if lv_skip > 0 retrieve the entries from lv_skip + Top - 1
 *  for example: skip=5 and top=2 means to start get results from the 6th row and end in row number 7
-   lv_top = ls_paging-top + lv_skip - 1.
- ELSEIF ls_paging-top <> 0
- AND    lv_skip IS INITIAL.
-   lv_top = ls_paging-top.
- ELSE.
-   lv_top = lines( et_apis ).
- ENDIF.
+lv_top = ls_paging-top + lv_skip - 1.
+ELSEIF ls_paging-top <> 0
+AND    lv_skip IS INITIAL.
+  lv_top = ls_paging-top.
+ELSE.
+  lv_top = lines( et_apis ).
+ENDIF.
 
 *  - Map properties from the backend to the Gateway output response table -
 
- LOOP AT et_apis INTO ls_et_apis
+LOOP AT et_apis INTO ls_et_apis
 *  Provide the response entries according to the Top and Skip parameters that were provided at runtime
-      FROM lv_skip TO lv_top.
+     FROM lv_skip TO lv_top.
 *  Only fields that were mapped will be delivered to the response table
-   ls_gw_et_apis-api = ls_et_apis-api.
-   ls_gw_et_apis-service_version = ls_et_apis-service_version.
-   ls_gw_et_apis-description = ls_et_apis-description.
-   APPEND ls_gw_et_apis TO et_entityset.
-   CLEAR ls_gw_et_apis.
- ENDLOOP.
+ ls_gw_et_apis-description = ls_et_apis-description.
+ ls_gw_et_apis-api = ls_et_apis-api.
+ ls_gw_et_apis-service_version = ls_et_apis-service_version.
+APPEND ls_gw_et_apis TO et_entityset.
+CLEAR ls_gw_et_apis.
+ENDLOOP.
 
   endmethod.
 
