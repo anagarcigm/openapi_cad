@@ -30,7 +30,8 @@ FUNCTION zf_get_apiscad.
       WHERE b~icfactive = @abap_true
 *      AND ( a~icfaltnme LIKE @gc_api OR a~icfaltnme LIKE @gc_zapi OR a~icfaltnme LIKE @gc_wildcard )
        AND  a~icfaltnme IN @lr_range
-         AND d~language = @sy-langu.
+         AND d~language = @sy-langu
+       ORDER BY icfaltnme.
   ELSE.
     SELECT a~icfaltnme, b~service_version, c~description
     FROM icfservice AS a INNER JOIN /iwfnd/i_med_srh AS b ON a~icfaltnme = b~service_name
@@ -38,8 +39,12 @@ FUNCTION zf_get_apiscad.
        INTO TABLE @et_apis
 *    WHERE ( a~icfaltnme LIKE @gc_api OR a~icfaltnme LIKE @gc_zapi OR a~icfaltnme LIKE @gc_wildcard )
       WHERE a~icfaltnme IN @lr_range
-      AND c~language = @sy-langu.
+      AND c~language = @sy-langu
+      ORDER BY icfaltnme.
   ENDIF.
+
+
+  DELETE ADJACENT DUPLICATES FROM et_apis COMPARING api.
 
 
 ENDFUNCTION.
